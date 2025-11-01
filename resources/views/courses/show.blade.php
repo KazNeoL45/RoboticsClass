@@ -1,55 +1,59 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Course Details
-        </h2>
+        Course Details
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    @if($course->image)
-                        <div class="mb-6">
-                            <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" class="w-full max-w-md rounded-lg shadow-md">
-                        </div>
-                    @endif
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+            <x-card title="{{ $course->name }}">
+                @if($course->image)
+                    <div class="mb-6">
+                        <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" class="w-full max-w-2xl rounded-lg shadow-lg">
+                    </div>
+                @endif
 
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-700">Name:</h3>
-                        <p class="text-gray-900">{{ $course->name }}</p>
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Description</h3>
+                        <p class="mt-2 text-gray-900 leading-relaxed">{{ $course->description ?? 'No description provided' }}</p>
                     </div>
 
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-700">Description:</h3>
-                        <p class="text-gray-900">{{ $course->description ?? 'No description provided' }}</p>
-                    </div>
-
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-700">Robotics Kit:</h3>
-                        <p class="text-gray-900">{{ $course->roboticsKit->name }}</p>
-                    </div>
-
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-700">Created At:</h3>
-                        <p class="text-gray-900">{{ $course->created_at->format('Y-m-d H:i:s') }}</p>
-                    </div>
-
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold text-gray-700">Updated At:</h3>
-                        <p class="text-gray-900">{{ $course->updated_at->format('Y-m-d H:i:s') }}</p>
-                    </div>
-
-                    <div class="flex items-center justify-end mt-6">
-                        <a href="{{ route('courses.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
-                            Back to List
-                        </a>
-                        <a href="{{ route('courses.edit', $course) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Edit Course
-                        </a>
+                    <div class="pt-4 border-t border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wide">Robotics Kit</h3>
+                        <p class="mt-2">
+                            <span class="inline-flex items-center px-4 py-2 rounded-lg bg-indigo-100 text-indigo-800 font-semibold">
+                                {{ $course->roboticsKit->name }}
+                            </span>
+                        </p>
                     </div>
                 </div>
-            </div>
+
+                <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
+                    <x-action-button variant="secondary" icon="back" :href="route('courses.index')">
+                        Back to List
+                    </x-action-button>
+                    <x-action-button variant="primary" icon="edit" :href="route('courses.edit', $course)">
+                        Edit Course
+                    </x-action-button>
+                </div>
+            </x-card>
+        </div>
+
+        <div class="lg:col-span-1">
+            <x-card title="Course Information">
+                <dl class="space-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Created</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $course->created_at->format('M d, Y') }}</dd>
+                        <dd class="text-xs text-gray-500">{{ $course->created_at->format('h:i A') }}</dd>
+                    </div>
+                    <div class="pt-4 border-t border-gray-200">
+                        <dt class="text-sm font-medium text-gray-500">Last Updated</dt>
+                        <dd class="mt-1 text-sm text-gray-900">{{ $course->updated_at->format('M d, Y') }}</dd>
+                        <dd class="text-xs text-gray-500">{{ $course->updated_at->format('h:i A') }}</dd>
+                    </div>
+                </dl>
+            </x-card>
         </div>
     </div>
 </x-app-layout>
